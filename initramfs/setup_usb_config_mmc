@@ -1,0 +1,21 @@
+#!/bin/sh
+## Copyright (C) 2021 - Benoit Gschwind <gschwind@gnu-log.net>
+
+. /info.sh
+
+CONFIGFS=/config/usb_gadget
+usb_mass_storage_function="mass_storage.0"
+
+if test -b "$EMMC" && test -d "$CONFIGFS/g1" ; then
+	echo "Enable eMMC storage"
+	# Set up mass storage to internal EMMC
+	echo $EMMC > $CONFIGFS/g1/functions/$usb_mass_storage_function/lun.0/file
+	/setup_led_trigger
+fi
+
+if test -b "$SD" && test -d "$CONFIGFS/g1" ; then
+	echo "Enable microSD storage"
+	# Set up mass storage to internal SD
+	echo $SD > $CONFIGFS/g1/functions/$usb_mass_storage_function/lun.1/file
+fi
+

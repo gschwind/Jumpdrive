@@ -1,0 +1,10 @@
+#!/bin/sh
+
+. /info.sh
+
+# LED indicator for MMC r/w access
+if [ -n "$LED" ]; then
+	if test -f /sys/class/leds/$LED/trigger && test -b $EMMC ; then
+		echo $TRIGGER > /sys/class/leds/$LED/trigger
+	fi
+fi

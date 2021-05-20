@@ -49,15 +49,6 @@ setup_usb_configfs() {
 	echo "rndis" > $CONFIGFS/g1/configs/c.1/strings/0x409/configuration \
 		|| echo "  Couldn't write configration name"
 
-	# Make sure the node for the eMMC exists
-	if [ -z "$(ls $EMMC)" ]; then
-		fatal_error "$EMMC could not be opened, possible eMMC defect"
-	fi
-
-	# Set up mass storage to internal EMMC
-	echo $EMMC > $CONFIGFS/g1/functions/"$usb_mass_storage_function"/lun.0/file
-	echo $SD > $CONFIGFS/g1/functions/"$usb_mass_storage_function"/lun.1/file
-
 	# Rename the mass storage device
 	echo "JumpDrive eMMC" > $CONFIGFS/g1/functions/"$usb_mass_storage_function"/lun.0/inquiry_string
 	echo "JumpDrive microSD" > $CONFIGFS/g1/functions/"$usb_mass_storage_function"/lun.1/inquiry_string
@@ -75,6 +66,9 @@ setup_usb_configfs() {
 
 	# shellcheck disable=SC2005
 	echo "$(ls /sys/class/udc)" > $CONFIGFS/g1/UDC || ( fatal_error "Couldn't write to UDC" )
+
+	# try to setup storagedata
+	/setup_usb_config_mmc
 }
 
 setup_telnetd() {
@@ -144,7 +138,8 @@ fatal_error() {
 	echo -e "\033[$ERRORLINES;0H"
 
 	gzip -c -d error.ppm.gz > /error.ppm
-	fbsplash -s /error.ppm
+	ln -sf /splash.ppm /img.ppm
+	/update_framebuffer
 	
 	# Print the error message over the error splash
 	echo "  $1"

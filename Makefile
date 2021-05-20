@@ -177,8 +177,8 @@ src/linux-rockchip:
 src/linux-sunxi:
 	@echo "WGET  linux-sunxi"
 	@mkdir src/linux-sunxi
-	@wget https://github.com/megous/linux/archive/orange-pi-5.9-20201019-1553.tar.gz
-	@tar -xvf orange-pi-5.9-20201019-1553.tar.gz --strip-components 1 -C src/linux-sunxi
+	@wget https://github.com/megous/linux/archive/orange-pi-5.12-20210517-1929.tar.gz
+	@tar -xvf orange-pi-5.12-20210517-1929.tar.gz --strip-components 1 -C src/linux-sunxi
 
 src/linux-librem5:
 	@echo "WGET linux-librem5"

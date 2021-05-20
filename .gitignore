@@ -5,7 +5,6 @@
 /build
 /dtbs
 /src/linux-rockchip
-/src/linux-sunxi
 /src/linux-librem5
 /src/busybox
 /src/u-boot
